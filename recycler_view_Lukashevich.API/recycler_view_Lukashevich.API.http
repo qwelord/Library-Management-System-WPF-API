@@ -1,0 +1,6 @@
+@recycler_view_Lukashevich.API_HostAddress = http://localhost:5092
+
+GET {{recycler_view_Lukashevich.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
