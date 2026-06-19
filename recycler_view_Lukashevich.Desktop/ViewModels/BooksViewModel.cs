@@ -63,8 +63,13 @@ public class BooksViewModel : INotifyPropertyChanged
             if (books != null)
             {
                 if (!string.IsNullOrEmpty(search))
-                    books = books.Where(b => b.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                                              b.Author.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                {
+                    books = books.Where(b =>
+                        (b.Title?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (b.Author?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (b.ISBN?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
+                }
+
                 Books.Clear();
                 foreach (var book in books)
                     Books.Add(book);

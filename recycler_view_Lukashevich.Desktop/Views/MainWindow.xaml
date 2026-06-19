@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:recycler_view_Lukashevich.Views"
         xmlns:converters="clr-namespace:recycler_view_Lukashevich.Converters"
-        Title="{Binding Title}" Height="600" Width="900"
+        Title="{Binding ViewModel.Title}" Height="650" Width="950"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -23,7 +23,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="📚 Библиотека" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Grid.Column="1" Text="{Binding CurrentUser}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding ViewModel.CurrentUser}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Content="Выйти" Width="80" Height="30" Margin="5,0" Click="LogoutButton_Click" Background="#E74C3C" Foreground="White"/>
                 </StackPanel>
@@ -34,11 +34,11 @@
             <TabItem Header="Книги">
                 <views:BooksView DataContext="{Binding BooksViewModel}" />
             </TabItem>
-            <TabItem Header="Читатели" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="Список читателей (в разработке)" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TabItem Header="Читатели" Visibility="{Binding ViewModel.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                <views:UsersView DataContext="{Binding UsersViewModel}" />
             </TabItem>
             <TabItem Header="Выдачи">
-                <TextBlock Text="Список выдач (в разработке)" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <views:LoansView DataContext="{Binding LoansViewModel}" />
             </TabItem>
         </TabControl>
     </Grid>

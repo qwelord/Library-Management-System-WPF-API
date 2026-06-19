@@ -7,4 +7,5 @@ public class UserModel
     public string FullName { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
     public DateTime RegistrationDate { get; set; }
+    public string PasswordHash { get; set; } = string.Empty;
 }
