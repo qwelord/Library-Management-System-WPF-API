@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../recycler_view_Lukashevich.API/recycler_view_Lukashevich.API.csproj" />
+  <Project Path="../recycler_view_Lukashevich.Desktop/recycler_view_Lukashevich.Desktop.csproj" />
+  <Project Path="recycler_view_Lukashevich.csproj" />
+</Solution>
