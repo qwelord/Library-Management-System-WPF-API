@@ -1,60 +1,103 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using recycler_view_Lukashevich.ViewModels;
+using Microsoft.Win32;
 
-namespace recycler_view_Lukashevich.Views;
-
-public partial class LoansView : UserControl
+namespace recycler_view_Lukashevich.Views
 {
-    public LoansViewModel ViewModel => DataContext as LoansViewModel ?? new();
-
-    public LoansView()
+    public partial class LoansView : UserControl
     {
-        InitializeComponent();
-    }
+        public LoansViewModel ViewModel => DataContext as LoansViewModel ?? new();
 
-    private void SearchButton_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
-    }
+        public LoansView()
+        {
+            InitializeComponent();
+        }
 
-    private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-        if (e.Key == System.Windows.Input.Key.Enter)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
         }
-    }
 
-    private void AddButton_Click(object sender, RoutedEventArgs e)
-    {
-        var window = new AddLoanWindow(ViewModel.ApiClient);
-        if (window.ShowDialog() == true)
+        private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
+            }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddLoanWindow(ViewModel.ApiClient);
+            if (window.ShowDialog() == true)
+            {
+                ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
+            }
+        }
+
+        private async void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedLoan == null)
+            {
+                MessageBox.Show("Выберите выдачу для возврата", "Информация");
+                return;
+            }
+            if (ViewModel.SelectedLoan.Status == "Returned")
+            {
+                MessageBox.Show("Книга уже возвращена", "Информация");
+                return;
+            }
+            if (MessageBox.Show($"Вернуть книгу '{ViewModel.SelectedLoan.Book?.Title}'?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                await ViewModel.ReturnBook(ViewModel.SelectedLoan.Id);
+            }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
         }
-    }
 
-    private async void ReturnButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SelectedLoan == null)
+        private async void DebtorsReport_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Выберите выдачу для возврата", "Информация");
-            return;
+            try
+            {
+                var file = await ViewModel.ApiClient.GetFileAsync("api/reports/debtors");
+                var sfd = new SaveFileDialog { Filter = "Excel Files|*.xlsx" };
+                if (sfd.ShowDialog() == true)
+                {
+                    File.WriteAllBytes(sfd.FileName, file);
+                    MessageBox.Show("Отчёт сохранён!", "Успех");
+                    Process.Start(new ProcessStartInfo(sfd.FileName) { UseShellExecute = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
         }
-        if (ViewModel.SelectedLoan.Status == "Returned")
-        {
-            MessageBox.Show("Книга уже возвращена", "Информация");
-            return;
-        }
-        if (MessageBox.Show($"Вернуть книгу '{ViewModel.SelectedLoan.Book?.Title}'?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-        {
-            await ViewModel.ReturnBook(ViewModel.SelectedLoan.Id);
-        }
-    }
 
-    private void RefreshButton_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.LoadLoansCommand?.Execute(ViewModel.SearchText);
+        private async void PopularReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var file = await ViewModel.ApiClient.GetFileAsync("api/reports/popular");
+                var sfd = new SaveFileDialog { Filter = "Excel Files|*.xlsx" };
+                if (sfd.ShowDialog() == true)
+                {
+                    File.WriteAllBytes(sfd.FileName, file);
+                    MessageBox.Show("Отчёт сохранён!", "Успех");
+                    Process.Start(new ProcessStartInfo(sfd.FileName) { UseShellExecute = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
     }
 }

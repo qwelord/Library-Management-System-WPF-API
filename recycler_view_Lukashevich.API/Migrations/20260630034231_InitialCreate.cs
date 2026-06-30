@@ -283,8 +283,8 @@ namespace recycler_view_Lukashevich.API.Migrations
                 columns: new[] { "Id", "Email", "FullName", "PasswordHash", "RegistrationDate", "Role" },
                 values: new object[,]
                 {
-                    { 1, "admin@library.com", "Администратор", "admin123", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin" },
-                    { 2, "ivanov@mail.ru", "Иван Иванов", "pass123", new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "User" },
+                    { 1, "admin@library.com", "Администратор", "$2a$11$uEWHnMBbcBsCtwmTNxZrK.hibKLK2UWJM8p1XRP1c1KGdXm35MHtu", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin" },
+                    { 2, "ivanov@mail.ru", "Иван Иванов", "$2a$11$.k7ymrWs5VwCB03MKo5ezurEWm2MNwkLFSav29F92c/LiHONGcova", new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Librarian" },
                     { 3, "petrova@mail.ru", "Петрова Анна", "pass123", new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "User" },
                     { 4, "sidorov@mail.ru", "Сидоров Сергей", "pass123", new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "User" },
                     { 5, "kozlov@mail.ru", "Козлов Дмитрий", "pass123", new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "User" },

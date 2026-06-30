@@ -70,7 +70,7 @@ public class UsersViewModel : INotifyPropertyChanged
 
         try
         {
-            var users = await ApiClient.GetAsync<List<UserModel>>("users");
+            var users = await ApiClient.GetAsync<List<UserModel>>("api/users");
             if (users != null)
             {
                 if (!string.IsNullOrEmpty(search))
@@ -102,7 +102,7 @@ public class UsersViewModel : INotifyPropertyChanged
         IsLoading = true;
         try
         {
-            await ApiClient.DeleteAsync($"users/{userId}");
+            await ApiClient.DeleteAsync($"api/users/{userId}");
             await LoadUsers(SearchText);
         }
         catch (Exception ex)

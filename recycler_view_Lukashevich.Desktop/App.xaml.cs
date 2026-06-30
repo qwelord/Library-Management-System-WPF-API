@@ -9,7 +9,9 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        var apiBaseUrl = "http://localhost:5092/api/";
+
+        // БЕРУ ИЗ SWAGGER — ТОЧНО ТАКОЙ ЖЕ
+        var apiBaseUrl = "http://localhost:5092/";
         var apiClient = new ApiClient(apiBaseUrl);
         var authService = new AuthService(apiClient);
 

@@ -860,7 +860,7 @@ namespace recycler_view_Lukashevich.API.Migrations
                             Id = 1,
                             Email = "admin@library.com",
                             FullName = "Администратор",
-                            PasswordHash = "admin123",
+                            PasswordHash = "$2a$11$uEWHnMBbcBsCtwmTNxZrK.hibKLK2UWJM8p1XRP1c1KGdXm35MHtu",
                             RegistrationDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "Admin"
                         },
@@ -869,9 +869,9 @@ namespace recycler_view_Lukashevich.API.Migrations
                             Id = 2,
                             Email = "ivanov@mail.ru",
                             FullName = "Иван Иванов",
-                            PasswordHash = "pass123",
+                            PasswordHash = "$2a$11$.k7ymrWs5VwCB03MKo5ezurEWm2MNwkLFSav29F92c/LiHONGcova",
                             RegistrationDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Role = "User"
+                            Role = "Librarian"
                         },
                         new
                         {

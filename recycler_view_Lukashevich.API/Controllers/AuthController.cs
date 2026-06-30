@@ -29,7 +29,11 @@ public class AuthController : ControllerBase
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == request.Email);
 
-        if (user == null || user.PasswordHash != request.Password)
+        if (user == null)
+            return Unauthorized(new { message = "Неверный email или пароль" });
+
+        bool passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        if (!passwordValid)
             return Unauthorized(new { message = "Неверный email или пароль" });
 
         var token = _jwtService.GenerateToken(user.Id, user.Email, user.Role);
@@ -45,6 +49,7 @@ public class AuthController : ControllerBase
         if (await _context.Users.AnyAsync(u => u.Email == user.Email))
             return BadRequest(new { message = "Email уже используется" });
 
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
         user.RegistrationDate = DateTime.UtcNow;
         user.Role = "User";
         _context.Users.Add(user);

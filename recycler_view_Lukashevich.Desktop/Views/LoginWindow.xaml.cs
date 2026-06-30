@@ -36,7 +36,7 @@ public partial class LoginWindow : Window
 
         try
         {
-            var result = await _apiClient.PostAsync<JsonElement>("auth/login", new { Email = email, Password = password });
+            var result = await _apiClient.PostAsync<JsonElement>("api/auth/login", new { Email = email, Password = password });
 
             if (result.ValueKind != JsonValueKind.Undefined)
             {
@@ -45,11 +45,12 @@ public partial class LoginWindow : Window
                 string fullName = result.GetProperty("fullName").GetString();
                 string role = result.GetProperty("role").GetString();
 
+                _apiClient.SetToken(token);
                 _authService.SetToken(token, userId, email, fullName, role);
 
                 var mainWindow = new MainWindow(_apiClient, _authService);
                 mainWindow.Show();
-                this.Close();
+                Close();
             }
             else
             {

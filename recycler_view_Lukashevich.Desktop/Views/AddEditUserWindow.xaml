@@ -17,18 +17,22 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="ФИО:" Margin="0,5"/>
-        <TextBox Grid.Row="1" x:Name="FullNameBox" Margin="0,5" Padding="5" Text="{Binding FullName}"/>
+        <TextBox Grid.Row="1" x:Name="FullNameBox" Margin="0,5" Padding="5" 
+                 Text="{Binding ViewModel.FullName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <TextBlock Grid.Row="2" Text="Email:" Margin="0,5"/>
-        <TextBox Grid.Row="3" x:Name="EmailBox" Margin="0,5" Padding="5" Text="{Binding Email}"/>
+        <TextBox Grid.Row="3" x:Name="EmailBox" Margin="0,5" Padding="5" 
+                 Text="{Binding ViewModel.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <TextBlock Grid.Row="4" Text="Пароль:" Margin="0,5"/>
         <PasswordBox Grid.Row="5" x:Name="PasswordBox" Margin="0,5" Padding="5"/>
 
         <TextBlock Grid.Row="6" Text="Роль:" Margin="0,5"/>
-        <ComboBox Grid.Row="7" x:Name="RoleCombo" Margin="0,5" Padding="5" SelectedItem="{Binding Role}">
+        <ComboBox Grid.Row="7" x:Name="RoleCombo" Margin="0,5" Padding="5" 
+                  SelectedValue="{Binding ViewModel.Role, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
             <ComboBoxItem Content="User" IsSelected="True"/>
             <ComboBoxItem Content="Admin"/>
+            <ComboBoxItem Content="Librarian"/>
         </ComboBox>
 
         <StackPanel Grid.Row="8" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">

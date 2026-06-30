@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" Width="930">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
@@ -36,11 +36,14 @@
                     Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Button Content="↩️ Вернуть" Width="80" Click="ReturnButton_Click"/>
             <Button Content="🔄 Обновить" Width="80" Click="RefreshButton_Click"/>
+            <Button Content="📊 Должники" Width="120" Click="DebtorsReport_Click" Margin="5,0,0,0"/>
+            <Button Content="📊 Популярные" Width="120" Click="PopularReport_Click" Margin="5,0,0,0"/>
         </StackPanel>
 
         <TextBlock Grid.Row="2" Text="Загрузка..." HorizontalAlignment="Center" 
                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
                    FontSize="16" Foreground="Gray"/>
+        
 
         <ListView Grid.Row="3" ItemsSource="{Binding Loans}" SelectedItem="{Binding SelectedLoan}"
                   IsSynchronizedWithCurrentItem="True"
@@ -54,6 +57,7 @@
                     <GridViewColumn Header="Срок возврата" Width="120" DisplayMemberBinding="{Binding DueDate}"/>
                     <GridViewColumn Header="Дата возврата" Width="120" DisplayMemberBinding="{Binding ReturnDate}"/>
                     <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    
                 </GridView>
             </ListView.View>
         </ListView>

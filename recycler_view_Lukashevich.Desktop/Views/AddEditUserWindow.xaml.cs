@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using recycler_view_Lukashevich.Models;
 using recycler_view_Lukashevich.Services;
 
@@ -62,11 +63,11 @@ public partial class AddEditUserWindow : Window
 
             if (_editUser == null)
             {
-                await _apiClient.PostAsync<UserModel>("users", userToSave);
+                await _apiClient.PostAsync<UserModel>("api/users", userToSave);
             }
             else
             {
-                await _apiClient.PutAsync<UserModel>($"users/{_editUser.Id}", userToSave);
+                await _apiClient.PutAsync<UserModel>($"api/users/{_editUser.Id}", userToSave);
             }
             DialogResult = true;
             Close();

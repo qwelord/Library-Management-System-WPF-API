@@ -1,87 +1,93 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using recycler_view_Lukashevich.Models;
 using recycler_view_Lukashevich.Services;
 
-namespace recycler_view_Lukashevich.ViewModels;
-
-public class BooksViewModel : INotifyPropertyChanged
+namespace recycler_view_Lukashevich.ViewModels
 {
-    private ApiClient? _apiClient;
-    public ApiClient? ApiClient
+    public class BooksViewModel : INotifyPropertyChanged
     {
-        get => _apiClient;
-        set { _apiClient = value; OnPropertyChanged(); }
-    }
-
-    private ObservableCollection<BookModel> _books = new();
-    public ObservableCollection<BookModel> Books
-    {
-        get => _books;
-        set { _books = value; OnPropertyChanged(); }
-    }
-
-    private BookModel? _selectedBook;
-    public BookModel? SelectedBook
-    {
-        get => _selectedBook;
-        set { _selectedBook = value; OnPropertyChanged(); }
-    }
-
-    private string _searchText = string.Empty;
-    public string SearchText
-    {
-        get => _searchText;
-        set { _searchText = value; OnPropertyChanged(); }
-    }
-
-    private bool _isLoading;
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set { _isLoading = value; OnPropertyChanged(); }
-    }
-
-    private bool _isAdmin;
-    public bool IsAdmin
-    {
-        get => _isAdmin;
-        set { _isAdmin = value; OnPropertyChanged(); }
-    }
-
-    public ICommand? LoadBooksCommand { get; set; }
-
-    public async Task LoadBooks(string? search = null)
-    {
-        if (ApiClient == null) return;
-        IsLoading = true;
-        try
+        private ApiClient _apiClient;
+        public ApiClient ApiClient
         {
-            var books = await ApiClient.GetAsync<List<BookModel>>("books");
-            if (books != null)
-            {
-                if (!string.IsNullOrEmpty(search))
-                {
-                    books = books.Where(b =>
-                        (b.Title?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                        (b.Author?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                        (b.ISBN?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
-                }
+            get => _apiClient;
+            set { _apiClient = value; OnPropertyChanged(); }
+        }
 
-                Books.Clear();
-                foreach (var book in books)
-                    Books.Add(book);
+        private ObservableCollection<BookModel> _books = new();
+        public ObservableCollection<BookModel> Books
+        {
+            get => _books;
+            set { _books = value; OnPropertyChanged(); }
+        }
+
+        private BookModel _selectedBook;
+        public BookModel SelectedBook
+        {
+            get => _selectedBook;
+            set { _selectedBook = value; OnPropertyChanged(); }
+        }
+
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get => _searchText;
+            set { _searchText = value; OnPropertyChanged(); }
+        }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set { _isLoading = value; OnPropertyChanged(); }
+        }
+
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set { _isAdmin = value; OnPropertyChanged(); }
+        }
+
+        public ICommand LoadBooksCommand { get; set; }
+
+        public async Task LoadBooks(string search = null)
+        {
+            if (ApiClient == null) return;
+            IsLoading = true;
+            try
+            {
+                var books = await ApiClient.GetAsync<List<BookModel>>("api/books");
+                if (books != null)
+                {
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        books = books.Where(b =>
+                            (b.Title?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                            (b.Author?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                            (b.ISBN?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
+                    }
+
+                    Books.Clear();
+                    foreach (var book in books)
+                        Books.Add(book);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки книг: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 }

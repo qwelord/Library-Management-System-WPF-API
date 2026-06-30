@@ -84,7 +84,7 @@ public class LoansViewModel : INotifyPropertyChanged
 
         try
         {
-            string endpoint = IsAdmin ? "loans" : $"loans/user/{CurrentUserId}";
+            string endpoint = IsAdmin ? "api/loans" : $"api/loans/user/{CurrentUserId}";
             var loans = await ApiClient.GetAsync<List<LoanModel>>(endpoint);
             if (loans != null)
             {
@@ -118,7 +118,7 @@ public class LoansViewModel : INotifyPropertyChanged
         IsLoading = true;
         try
         {
-            await ApiClient.PutAsync<object>($"loans/{loanId}/return", new { });
+            await ApiClient.PutAsync<object>($"api/loans/{loanId}/return", new { });
             await LoadLoans(SearchText);
         }
         catch (Exception ex)

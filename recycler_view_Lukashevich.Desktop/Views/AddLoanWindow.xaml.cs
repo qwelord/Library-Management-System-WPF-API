@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using recycler_view_Lukashevich.Models;
 using recycler_view_Lukashevich.Services;
@@ -15,19 +17,25 @@ public partial class AddLoanWindow : Window
     {
         InitializeComponent();
         _apiClient = apiClient;
-        LoadData();
+        DataContext = this;
+        Loaded += async (s, e) => await LoadData();
     }
 
-    private async void LoadData()
+    private async Task LoadData()
     {
         if (_apiClient == null) return;
         try
         {
-            _books = await _apiClient.GetAsync<List<BookModel>>("books") ?? new List<BookModel>();
-            _users = await _apiClient.GetAsync<List<UserModel>>("users") ?? new List<UserModel>();
+            _books = await _apiClient.GetAsync<List<BookModel>>("api/books") ?? new List<BookModel>();
+            _users = await _apiClient.GetAsync<List<UserModel>>("api/users") ?? new List<UserModel>();
 
             BookCombo.ItemsSource = _books;
+            BookCombo.DisplayMemberPath = "Title";
+            BookCombo.SelectedValuePath = "Id";
+
             UserCombo.ItemsSource = _users;
+            UserCombo.DisplayMemberPath = "FullName";
+            UserCombo.SelectedValuePath = "Id";
         }
         catch (Exception ex)
         {
@@ -58,7 +66,7 @@ public partial class AddLoanWindow : Window
 
         try
         {
-            await _apiClient.PostAsync<LoanModel>("loans", loan);
+            await _apiClient.PostAsync<LoanModel>("api/loans", loan);
             DialogResult = true;
             Close();
         }

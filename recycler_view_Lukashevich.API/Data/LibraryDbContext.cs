@@ -92,8 +92,22 @@ public class LibraryDbContext : DbContext
     {
         var users = new List<User>
         {
-            new User { Id = 1, Email = "admin@library.com", PasswordHash = "admin123", FullName = "Администратор", Role = "Admin", RegistrationDate = new DateTime(2024,1,1) },
-            new User { Id = 2, Email = "ivanov@mail.ru", PasswordHash = "pass123", FullName = "Иван Иванов", Role = "User", RegistrationDate = new DateTime(2024,1,5) },
+        new User {
+            Id = 1,
+            Email = "admin@library.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+            FullName = "Администратор",
+            Role = "Admin",
+            RegistrationDate = new DateTime(2024,1,1)
+        },
+        new User {
+            Id = 2,
+            Email = "ivanov@mail.ru",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("pass123"),
+            FullName = "Иван Иванов",
+            Role = "Librarian",
+            RegistrationDate = new DateTime(2024,1,5)
+},
             new User { Id = 3, Email = "petrova@mail.ru", PasswordHash = "pass123", FullName = "Петрова Анна", Role = "User", RegistrationDate = new DateTime(2024,1,10) },
             new User { Id = 4, Email = "sidorov@mail.ru", PasswordHash = "pass123", FullName = "Сидоров Сергей", Role = "User", RegistrationDate = new DateTime(2024,1,15) },
             new User { Id = 5, Email = "kozlov@mail.ru", PasswordHash = "pass123", FullName = "Козлов Дмитрий", Role = "User", RegistrationDate = new DateTime(2024,1,20) },

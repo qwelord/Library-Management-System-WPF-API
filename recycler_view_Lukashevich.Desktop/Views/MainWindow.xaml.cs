@@ -23,7 +23,7 @@ public partial class MainWindow : Window
         var currentUser = _authService.CurrentUser;
         ViewModel.CurrentUser = currentUser?.FullName ?? "Гость";
         ViewModel.Role = currentUser?.Role ?? "User";
-        ViewModel.IsAdmin = ViewModel.Role == "Admin";
+        ViewModel.IsAdmin = ViewModel.Role == "Admin" || ViewModel.Role == "Librarian";
 
         BooksViewModel.ApiClient = _apiClient;
         BooksViewModel.IsAdmin = ViewModel.IsAdmin;
@@ -53,11 +53,11 @@ public partial class MainWindow : Window
         LoansViewModel.LoadLoansCommand.Execute(null);
     }
 
-    private async void LogoutButton_Click(object sender, RoutedEventArgs e)
+    private void LogoutButton_Click(object sender, RoutedEventArgs e)
     {
         _authService.Logout();
         var loginWindow = new LoginWindow(_apiClient, _authService);
         loginWindow.Show();
-        this.Close();
+        Close();
     }
 }
